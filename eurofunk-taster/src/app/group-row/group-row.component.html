@@ -1,0 +1,29 @@
+<div class="root">
+  <div class="header">
+    <p>{{ group?.name }}</p>
+    <button (click)="handleDeleteGroup()">Delete group</button>
+  </div>
+  <div class="checkbox-section">
+    <div class="checkbox-subsection">
+      <label>Permissions</label>
+      <mat-checkbox
+        *ngFor="let permission of permissions"
+        [checked]="group?.permissions?.includes(permission)"
+        (change)="setPermission($event.checked, permission)"
+      >
+        {{ permission }}
+      </mat-checkbox>
+    </div>
+    <div class="checkbox-subsection">
+      <label>Users</label>
+      <mat-checkbox
+        *ngFor="let user of users"
+        class="checkbox-subsection"
+        [checked]="group?.userIds?.includes(user.id)"
+        (change)="setUser($event.checked, user.id)"
+      >
+        {{ user.name }}
+      </mat-checkbox>
+    </div>
+  </div>
+</div>
