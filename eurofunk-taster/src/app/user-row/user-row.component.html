@@ -23,16 +23,5 @@
       </mat-checkbox>
       <p *ngIf="permissions.length <= 0">No permissions</p>
     </div>
-    <!-- <div class="checkbox-subsection">
-      <label>Groups</label>
-      <mat-checkbox
-        *ngFor="let group of groups"
-        class="checkbox-subsection"
-        [checked]="group?.userIds?.includes(user.id)"
-        (change)="setGroup($event.checked, group.id)"
-      >
-        {{ group.name }}
-      </mat-checkbox>
-    </div> -->
   </div>
 </div>

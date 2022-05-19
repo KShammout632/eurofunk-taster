@@ -71,6 +71,12 @@ export class AppComponent {
     this.permissionInput.setValue('');
   }
 
+  updateUsersData(): void {
+    this.users = JSON.parse(localStorage.getItem('users') || '').sort(
+      (a: User, b: User) => a.id > b.id
+    );
+  }
+
   deleteUser(userId: string): void {
     this.users = this.users.filter((u: User) => u.id != userId);
     localStorage.setItem('users', JSON.stringify(this.users));
@@ -79,6 +85,7 @@ export class AppComponent {
   deleteGroup(groupId: string): void {
     this.groups = this.groups.filter((g: Group) => g.id != groupId);
     localStorage.setItem('groups', JSON.stringify(this.groups));
+    this.updateUsersData();
   }
 
   modifyUserInGroup(checked: boolean, userId: string, groupId: string): void {
@@ -96,6 +103,7 @@ export class AppComponent {
     }
     cleanedData.push(modifiedGroup);
     localStorage.setItem('groups', JSON.stringify(cleanedData));
+    this.updateUsersData();
   }
 
   changeGroup(data: any): void {

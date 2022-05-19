@@ -14,7 +14,6 @@ export class UserRowComponent implements OnInit {
   @Input() negativePermissions: string[];
   @Input() groups: Group[];
   @Output() deleteUser: EventEmitter<any> = new EventEmitter();
-  @Output() changeGroup: EventEmitter<any> = new EventEmitter();
   groupPermissions = new Set();
 
   constructor() {}
@@ -57,10 +56,6 @@ export class UserRowComponent implements OnInit {
     }
     cleanedData.push(this.user);
     localStorage.setItem('users', JSON.stringify(cleanedData));
-  }
-
-  setGroup(checked: boolean, id: string): void {
-    this.changeGroup.emit({ userId: this.user.id, groupId: id, checked });
   }
 
   handleDeleteUser(): void {

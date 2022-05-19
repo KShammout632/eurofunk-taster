@@ -40,6 +40,7 @@
       [users]="users"
       (deleteGroup)="deleteGroup($event)"
       (changeGroup)="changeGroup($event)"
+      (updateUsers)="updateUsersData()"
     ></app-group-row>
   </div>
   <div class="user-container">
@@ -51,7 +52,6 @@
       [negativePermissions]="negativePermissions"
       [groups]="groups"
       (deleteUser)="deleteUser($event)"
-      (changeGroup)="changeGroup($event)"
     ></app-user-row>
   </div>
 </div>

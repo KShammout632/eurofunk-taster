@@ -15,6 +15,7 @@ export class GroupRowComponent implements OnInit {
   @Input() users: User[];
   @Output() deleteGroup: EventEmitter<any> = new EventEmitter();
   @Output() changeGroup: EventEmitter<any> = new EventEmitter();
+  @Output() updateUsers: EventEmitter<any> = new EventEmitter();
 
   constructor() {}
 
@@ -41,6 +42,7 @@ export class GroupRowComponent implements OnInit {
     }
     cleanedData.push(this.group);
     localStorage.setItem('groups', JSON.stringify(cleanedData));
+    this.updateUsers.emit();
   }
 
   setUser(checked: boolean, id: string): void {
