@@ -12,42 +12,31 @@ type memberType = 'group' | 'user';
 })
 export class AppComponent {
   title = 'eurofunk-taster';
-  users = JSON.parse(localStorage.getItem('users') || '').sort(
-    (a: User, b: User) => a.id > b.id
-  );
-  permissions = JSON.parse(localStorage.getItem('permissions') || '').sort(
-    (a: string, b: string) => a > b
-  );
-  groups = JSON.parse(localStorage.getItem('groups') || '').sort(
-    (a: Group, b: Group) => a.name > b.name
-  );
-  // users = [];
-  // permissions = [];
-  // groups = [];
+  users: User[] = [];
+  permissions: string[] = [];
+  groups: Group[] = [];
   userInput = new FormControl('');
   groupInput = new FormControl('');
   permissionInput = new FormControl('');
 
   ngOnInit(): void {
-    // localStorage.setItem(
-    //   'users',
-    //   JSON.stringify([
-    //     { id: 1, name: 'User 1', permissions: ['upload', 'download'] },
-    //     { id: 2, name: 'User 2', permissions: ['download', 'edit'] },
-    //   ])
-    // );
-    // localStorage.setItem(
-    //   'permissions',
-    //   JSON.stringify(['upload', 'download', 'edit'])
-    // );
-    // localStorage.setItem(
-    //   'groups',
-    //   JSON.stringify([
-    //     { id: 1, name: 'managers', userIds: [1] },
-    //     { id: 2, name: 'users', userIds: [1, 2] },
-    //     { id: 3, name: 'developers', userIds: [] },
-    //   ])
-    // );
+    if (localStorage.getItem('initialized')) {
+      this.users = JSON.parse(localStorage.getItem('users') || '').sort(
+        (a: User, b: User) => a.id > b.id
+      );
+      this.permissions = JSON.parse(
+        localStorage.getItem('permissions') || ''
+      ).sort((a: string, b: string) => a > b);
+      this.groups = JSON.parse(localStorage.getItem('groups') || '').sort(
+        (a: Group, b: Group) => a.name > b.name
+      );
+    } else {
+      localStorage.setItem('users', JSON.stringify([]));
+      this.permissions = ['upload', 'download', 'edit'];
+      localStorage.setItem('permissions', JSON.stringify(this.permissions));
+      localStorage.setItem('groups', JSON.stringify([]));
+      localStorage.setItem('initialized', JSON.stringify(true));
+    }
   }
 
   addUser(): void {

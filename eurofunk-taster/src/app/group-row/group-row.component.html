@@ -13,6 +13,7 @@
       >
         {{ permission }}
       </mat-checkbox>
+      <p *ngIf="permissions.length <= 0">No permissions</p>
     </div>
     <div class="checkbox-subsection">
       <label>Users</label>
@@ -24,6 +25,7 @@
       >
         {{ user.name }}
       </mat-checkbox>
+      <p *ngIf="users.length <= 0">No users</p>
     </div>
   </div>
 </div>

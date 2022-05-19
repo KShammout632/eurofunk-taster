@@ -8,6 +8,7 @@
       <label>Permissions</label>
       <mat-checkbox
         *ngFor="let permission of permissions"
+        [disabled]="permissionFromGroup(permission)"
         [checked]="
           user?.permissions?.includes(permission) ||
           permissionFromGroup(permission)
@@ -16,6 +17,7 @@
       >
         {{ permission }} {{ permissionFromGroup(permission) ? "*" : "" }}
       </mat-checkbox>
+      <p *ngIf="permissions.length <= 0">No permissions</p>
     </div>
     <!-- <div class="checkbox-subsection">
       <label>Groups</label>
