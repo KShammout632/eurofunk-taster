@@ -1,5 +1,4 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { MatCheckboxModule } from '@angular/material/checkbox';
 import { Group } from '../group';
 import { User } from '../user';
 
@@ -23,10 +22,10 @@ export class UserRowComponent implements OnInit {
   }
 
   getPermissions(): void {
-    const userGroups = this.groups.filter((g: Group) =>
+    const userGroups = this.groups?.filter((g: Group) =>
       g.userIds.includes(this.user.id)
     );
-    userGroups.map((g: Group) =>
+    userGroups?.map((g: Group) =>
       g.permissions.map((p: string) => this.groupPermissions.add(p))
     );
   }

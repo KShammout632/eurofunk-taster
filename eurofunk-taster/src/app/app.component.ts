@@ -22,26 +22,35 @@ export class AppComponent {
 
   ngOnInit(): void {
     if (localStorage.getItem('initialized')) {
-      this.users = JSON.parse(localStorage.getItem('users') || '').sort(
+      this.users = this.getLocalStorageItem('users')?.sort(
         (a: User, b: User) => a.id > b.id
       );
-      this.permissions = JSON.parse(
-        localStorage.getItem('permissions') || ''
-      ).sort((a: string, b: string) => a > b);
-      this.groups = JSON.parse(localStorage.getItem('groups') || '').sort(
+      this.permissions = this.getLocalStorageItem('permissions')?.sort(
+        (a: string, b: string) => a > b
+      );
+      this.groups = this.getLocalStorageItem('groups')?.sort(
         (a: Group, b: Group) => a.name > b.name
       );
-      this.negativePermissions = JSON.parse(
-        localStorage.getItem('negativePermissions') || ''
-      ).sort((a: string, b: string) => a > b);
+      this.negativePermissions = this.getLocalStorageItem(
+        'negativePermissions'
+      )?.sort((a: string, b: string) => a > b);
     } else {
-      localStorage.setItem('users', JSON.stringify([]));
-      this.permissions = ['upload', 'download', 'edit'];
-      localStorage.setItem('permissions', JSON.stringify(this.permissions));
-      localStorage.setItem('groups', JSON.stringify([]));
-      localStorage.setItem('negativePermissions', JSON.stringify([]));
-      localStorage.setItem('initialized', JSON.stringify(true));
+      this.resetLocalStorage();
     }
+  }
+
+  resetLocalStorage(): void {
+    localStorage.setItem('users', JSON.stringify([]));
+    this.permissions = ['upload', 'download', 'edit'];
+    localStorage.setItem('permissions', JSON.stringify(this.permissions));
+    localStorage.setItem('groups', JSON.stringify([]));
+    localStorage.setItem('negativePermissions', JSON.stringify([]));
+    localStorage.setItem('initialized', JSON.stringify(true));
+  }
+
+  getLocalStorageItem(query: string): any {
+    const result = localStorage.getItem(query);
+    return result ? JSON.parse(result) : result;
   }
 
   addUser(): void {
@@ -72,7 +81,7 @@ export class AppComponent {
   }
 
   updateUsersData(): void {
-    this.users = JSON.parse(localStorage.getItem('users') || '').sort(
+    this.users = this.getLocalStorageItem('users')?.sort(
       (a: User, b: User) => a.id > b.id
     );
   }
@@ -80,6 +89,9 @@ export class AppComponent {
   deleteUser(userId: string): void {
     this.users = this.users.filter((u: User) => u.id != userId);
     localStorage.setItem('users', JSON.stringify(this.users));
+    for (let group of this.groups) {
+      this.modifyUserInGroup(false, userId, group.id);
+    }
   }
 
   deleteGroup(groupId: string): void {

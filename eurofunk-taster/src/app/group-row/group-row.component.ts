@@ -1,5 +1,4 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { MatCheckboxModule } from '@angular/material/checkbox';
 import { Group } from '../group';
 import { User } from '../user';
 

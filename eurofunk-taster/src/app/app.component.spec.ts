@@ -1,31 +1,74 @@
-import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [
-        AppComponent
-      ],
-    }).compileComponents();
+  let app: AppComponent;
+  beforeEach(() => {
+    app = new AppComponent();
+    app.resetLocalStorage();
   });
 
-  it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
+  it(`should add group`, () => {
+    let localStorageGroups = app.getLocalStorageItem('groups');
+    expect(localStorageGroups).toEqual([]);
+    const newGroupName = 'New Group';
+    app.groupInput.setValue(newGroupName);
+    app.addGroup();
+    expect(app.groups.length).toBe(1);
+    expect(app.groups[0].name).toBe(newGroupName);
+    localStorageGroups = app.getLocalStorageItem('groups');
+    expect(localStorageGroups.length).toBe(1);
+    expect(localStorageGroups[0].name).toBe(newGroupName);
   });
 
-  it(`should have as title 'eurofunk-taster'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('eurofunk-taster');
+  it(`should remove group`, () => {
+    let localStorageGroups = app.getLocalStorageItem('groups');
+    const newGroupName = 'New Group';
+    app.groupInput.setValue(newGroupName);
+    app.addGroup();
+    expect(app.groups.length).toBe(1);
+    const group = app.groups[0];
+    localStorageGroups = app.getLocalStorageItem('groups');
+    expect(localStorageGroups.length).toBe(1);
+
+    app.deleteGroup(group.id);
+    expect(app.groups.length).toBe(0);
+    localStorageGroups = app.getLocalStorageItem('groups');
+    expect(localStorageGroups.length).toBe(0);
   });
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('eurofunk-taster app is running!');
+  it(`should add user`, () => {
+    let localStorageUsers = app.getLocalStorageItem('users');
+    expect(localStorageUsers).toEqual([]);
+    const newUserName = 'New User';
+    app.userInput.setValue(newUserName);
+    app.addUser();
+    expect(app.users.length).toBe(1);
+    expect(app.users[0].name).toBe(newUserName);
+    localStorageUsers = app.getLocalStorageItem('users');
+    expect(localStorageUsers.length).toBe(1);
+    expect(localStorageUsers[0].name).toBe(newUserName);
+  });
+
+  it(`should remove user after adding to group`, () => {
+    let localStorageUsers = app.getLocalStorageItem('users');
+    const newUserName = 'New User';
+    app.userInput.setValue(newUserName);
+    app.addUser();
+    app.groupInput.setValue('New Group');
+    app.addGroup();
+    expect(app.users.length).toBe(1);
+    const user = app.users[0];
+    const group = app.groups[0];
+    localStorageUsers = app.getLocalStorageItem('users');
+    expect(localStorageUsers.length).toBe(1);
+
+    app.modifyUserInGroup(true, user.id, group.id);
+    expect(app.groups[0].userIds.includes(user.id));
+
+    app.deleteUser(user.id);
+    expect(app.groups[0].userIds).not.toContain(user.id);
+    expect(app.users.length).toBe(0);
+    localStorageUsers = app.getLocalStorageItem('users');
+    expect(localStorageUsers.length).toBe(0);
   });
 });
