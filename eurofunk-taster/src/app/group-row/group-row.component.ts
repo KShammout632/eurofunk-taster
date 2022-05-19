@@ -11,6 +11,7 @@ import { User } from '../user';
 export class GroupRowComponent implements OnInit {
   @Input() group: Group;
   @Input() permissions: string[];
+  @Input() negativePermissions: string[];
   @Input() users: User[];
   @Output() deleteGroup: EventEmitter<any> = new EventEmitter();
   @Output() changeGroup: EventEmitter<any> = new EventEmitter();
@@ -18,6 +19,10 @@ export class GroupRowComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {}
+
+  negativePermission(permission: string): boolean {
+    return this.negativePermissions.includes(permission);
+  }
 
   setPermission(checked: boolean, permission: string): void {
     const localStorageData = JSON.parse(localStorage.getItem('groups') || '');

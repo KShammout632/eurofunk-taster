@@ -11,6 +11,7 @@ import { User } from '../user';
 export class UserRowComponent implements OnInit {
   @Input() user: User;
   @Input() permissions: string[];
+  @Input() negativePermissions: string[];
   @Input() groups: Group[];
   @Output() deleteUser: EventEmitter<any> = new EventEmitter();
   @Output() changeGroup: EventEmitter<any> = new EventEmitter();
@@ -33,6 +34,10 @@ export class UserRowComponent implements OnInit {
 
   permissionFromGroup(permission: string): boolean {
     return this.groupPermissions.has(permission);
+  }
+
+  negativePermission(permission: string): boolean {
+    return this.negativePermissions.includes(permission);
   }
 
   setPermission(checked: boolean, permission: string): void {

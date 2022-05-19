@@ -20,12 +20,23 @@
   </div>
 </div>
 <div class="content" role="main">
+  <div class="negative-permissions">
+    <h2>Negative Permissions</h2>
+    <mat-checkbox
+      *ngFor="let permission of permissions"
+      [checked]="negativePermissions.includes(permission)"
+      (change)="setNegativePermission($event.checked, permission)"
+    >
+      {{ permission }}
+    </mat-checkbox>
+  </div>
   <div class="group-container">
     <h2>Groups</h2>
     <app-group-row
       *ngFor="let group of groups"
       [group]="group"
       [permissions]="permissions"
+      [negativePermissions]="negativePermissions"
       [users]="users"
       (deleteGroup)="deleteGroup($event)"
       (changeGroup)="changeGroup($event)"
@@ -37,6 +48,7 @@
       *ngFor="let user of users"
       [user]="user"
       [permissions]="permissions"
+      [negativePermissions]="negativePermissions"
       [groups]="groups"
       (deleteUser)="deleteUser($event)"
       (changeGroup)="changeGroup($event)"

@@ -15,6 +15,7 @@ export class AppComponent {
   users: User[] = [];
   permissions: string[] = [];
   groups: Group[] = [];
+  negativePermissions: string[] = [];
   userInput = new FormControl('');
   groupInput = new FormControl('');
   permissionInput = new FormControl('');
@@ -30,11 +31,15 @@ export class AppComponent {
       this.groups = JSON.parse(localStorage.getItem('groups') || '').sort(
         (a: Group, b: Group) => a.name > b.name
       );
+      this.negativePermissions = JSON.parse(
+        localStorage.getItem('negativePermissions') || ''
+      ).sort((a: string, b: string) => a > b);
     } else {
       localStorage.setItem('users', JSON.stringify([]));
       this.permissions = ['upload', 'download', 'edit'];
       localStorage.setItem('permissions', JSON.stringify(this.permissions));
       localStorage.setItem('groups', JSON.stringify([]));
+      localStorage.setItem('negativePermissions', JSON.stringify([]));
       localStorage.setItem('initialized', JSON.stringify(true));
     }
   }
@@ -100,5 +105,19 @@ export class AppComponent {
 
   uid(type: memberType): string {
     return type + Date.now().toString(36) + Math.random().toString(36).slice(2);
+  }
+
+  setNegativePermission(checked: boolean, permission: string): void {
+    if (checked) {
+      this.negativePermissions.push(permission);
+    } else {
+      this.negativePermissions = this.negativePermissions.filter(
+        (p: string) => p != permission
+      );
+    }
+    localStorage.setItem(
+      'negativePermissions',
+      JSON.stringify(this.negativePermissions)
+    );
   }
 }
